@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <meta name="description" content="Maintenance Issues and Response Log Dashboard - Tracking property maintenance history, response times, and resolution status">
   <title>Property Maintenance Issues Dashboard</title>
   <style>
@@ -14,6 +14,8 @@
       --text-color: #333333;
       --border-color: #e9ecef;
       --hover-color: #f1f3f5;
+      
+      /* Category Colors */
       --ac-color: #00bcd4;
       --window-color: #4caf50;
       --blinds-color: #ffc107;
@@ -24,6 +26,8 @@
       --freezer-color: #3f51b5;
       --refrigerator-color: #009688;
       --unresolved-color: #f44336;
+      
+      /* Status Colors */
       --resolved-color: #28a745;
       --unresolved-color: #dc3545;
       --tenant-paid-color: #fd7e14;
@@ -31,148 +35,154 @@
       --expenses-bg: #fff3e0;
       --health-impact-color: #d32f2f;
     }
-
+    
     *, *::before, *::after {
       box-sizing: border-box;
     }
-
+    
     body {
-      font-family: 'Arial', sans-serif;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
       line-height: 1.6;
       margin: 0;
-      padding: 10px;
+      padding: 20px;
       background-color: var(--background-color);
       color: var(--text-color);
       font-size: 14px;
     }
-
+    
+    /* Dashboard Container */
     .dashboard {
       max-width: 1200px;
       margin: 0 auto;
       background-color: var(--card-bg);
       border-radius: 8px;
       box-shadow: 0 2px 15px rgba(0, 0, 0, 0.08);
-      padding: 15px;
+      padding: 30px;
     }
-
+    
+    /* Typography */
     h1 {
       text-align: center;
       color: var(--primary-color);
-      margin-bottom: 20px;
-      padding-bottom: 10px;
+      margin-bottom: 30px;
+      padding-bottom: 15px;
       border-bottom: 2px solid var(--border-color);
-      font-size: 20px;
+      font-size: 24px;
       font-weight: 700;
     }
-
+    
     h2 {
       color: var(--primary-color);
-      margin: 20px 0 10px;
-      font-size: 16px;
+      margin-top: 30px;
+      margin-bottom: 15px;
+      font-size: 18px;
       font-weight: 600;
+      page-break-after: avoid;
     }
-
+    
     h3 {
       color: var(--primary-color);
-      font-size: 14px;
-      margin: 15px 0 8px;
+      font-size: 16px;
+      margin-top: 20px;
+      margin-bottom: 10px;
     }
-
+    
+    /* Summary Stats Grid */
     .summary {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
-      gap: 10px;
-      margin-bottom: 20px;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 20px;
+      margin-bottom: 30px;
     }
-
+    
     .stat-box {
       background-color: var(--card-bg);
       border-radius: 8px;
       box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
-      padding: 15px;
+      padding: 20px;
       text-align: center;
       transition: transform 0.2s ease, box-shadow 0.2s ease;
     }
-
+    
     .stat-box:hover {
       transform: translateY(-5px);
       box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
     }
-
+    
     .stat-box h3 {
       margin: 0;
-      font-size: 12px;
+      font-size: 14px;
       font-weight: 600;
       color: #6c757d;
     }
-
+    
     .stat-box p {
-      margin: 8px 0 0;
-      font-size: 24px;
+      margin: 10px 0 0;
+      font-size: 28px;
       font-weight: 700;
     }
-
+    
     .tenant-expenses-box {
       background-color: var(--expenses-bg);
       border: 3px solid var(--tenant-paid-color);
       border-radius: 8px;
-      margin: 20px 0;
-      padding: 15px;
+      margin: 30px 0;
+      padding: 20px;
       box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
     }
-
+    
     .tenant-expenses-box h2 {
       color: var(--tenant-paid-color);
       margin-top: 0;
       border-bottom: 2px solid var(--tenant-paid-color);
-      padding-bottom: 8px;
+      padding-bottom: 10px;
     }
-
+    
     .expense-amount {
       color: var(--tenant-paid-color);
       font-weight: 700;
-      font-size: 16px;
+      font-size: 18px;
       margin: 5px 0;
     }
-
+    
     .health-impact-box {
       background-color: #ffebee;
       border: 3px solid var(--health-impact-color);
       border-radius: 8px;
-      margin: 10px 0;
-      padding: 15px;
+      margin: 15px 0;
+      padding: 15px 20px;
     }
-
+    
     .health-impact-title {
       color: var(--health-impact-color);
       font-weight: 700;
-      font-size: 14px;
-      margin: 0 0 8px 0;
+      font-size: 16px;
+      margin: 0 0 10px 0;
       text-transform: uppercase;
     }
-
+    
     .health-impact-list {
       margin: 0;
-      padding-left: 15px;
+      padding-left: 20px;
     }
-
+    
     .health-impact-list li {
       margin-bottom: 5px;
       font-weight: 500;
     }
-
+    
+    /* Timeline Section */
     .timeline {
       display: flex;
-      flex-wrap: wrap;
       justify-content: space-between;
-      margin: 20px 0;
+      margin: 30px 0;
       position: relative;
       border-radius: 8px;
-      padding: 15px;
+      padding: 25px 15px;
       background-color: var(--card-bg);
       box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
     }
-
+    
     .timeline::before {
       content: '';
       position: absolute;
@@ -183,56 +193,58 @@
       background-color: var(--border-color);
       z-index: 1;
     }
-
+    
     .timeline-point {
       position: relative;
       z-index: 2;
       text-align: center;
-      flex: 1 1 80px;
+      width: 100px;
       background-color: var(--card-bg);
       border: 1px solid var(--border-color);
-      padding: 8px;
+      padding: 10px;
       border-radius: 8px;
-      margin: 5px;
       box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
       transition: transform 0.2s ease, box-shadow 0.2s ease;
     }
-
+    
     .timeline-point:hover {
       transform: scale(1.05);
       box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     }
-
+    
     .timeline-year {
       font-weight: 700;
-      font-size: 14px;
+      font-size: 16px;
       color: var(--primary-color);
     }
-
+    
     .timeline-count {
-      font-size: 11px;
+      font-size: 12px;
       color: #6c757d;
       margin-top: 5px;
     }
-
+    
+    /* Category Sections */
     .category-section {
-      margin-bottom: 20px;
+      margin-bottom: 30px;
       border-radius: 8px;
       overflow: hidden;
       box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+      page-break-inside: avoid;
     }
-
+    
     .category-header {
-      padding: 10px 15px;
+      padding: 12px 20px;
       font-weight: 600;
-      font-size: 14px;
+      font-size: 16px;
       color: white;
       display: flex;
       justify-content: space-between;
       align-items: center;
       cursor: pointer;
     }
-
+    
+    /* Category-specific header colors */
     .ac-header { background-color: var(--ac-color); }
     .window-header { background-color: var(--window-color); }
     .blinds-header { background-color: var(--blinds-color); color: #333; }
@@ -243,72 +255,79 @@
     .freezer-header { background-color: var(--freezer-color); }
     .refrigerator-header { background-color: var(--refrigerator-color); }
     .unresolved-header { background-color: var(--unresolved-color); }
-
+    
     .issue-count {
       background-color: rgba(255,255,255,0.3);
-      padding: 2px 8px;
+      padding: 2px 10px;
       border-radius: 50px;
-      font-size: 11px;
+      font-size: 12px;
       font-weight: 500;
     }
-
+    
+    /* Tables */
     .table-responsive {
       overflow-x: auto;
-      -webkit-overflow-scrolling: touch;
+      -webkit-overflow-scrolling: touch; /* For smooth scrolling on iOS */
     }
-
+    
     table {
       width: 100%;
       border-collapse: collapse;
       background-color: var(--card-bg);
-      font-size: 12px;
     }
-
+    
     th, td {
       border: 1px solid var(--border-color);
-      padding: 8px;
+      padding: 12px;
       text-align: left;
       vertical-align: top;
     }
-
+    
     th {
       background-color: #f8f9fa;
       font-weight: 600;
       color: #495057;
       position: sticky;
       top: 0;
-      z-index: 10;
     }
-
+    
     tr:nth-child(even) {
       background-color: #f8f9fa;
     }
-
-    tr:hover {
-      background-color: var(--hover-color);
+    
+    /* Status Classes */
+    .resolved {
+      color: var(--resolved-color);
+      font-weight: 600;
     }
-
-    .resolved { color: var(--resolved-color); font-weight: 600; }
-    .unresolved { color: var(--unresolved-color); font-weight: 600; }
-    .tenant-paid { color: var(--tenant-paid-color); font-weight: 600; }
-    .delay { color: var(--unresolved-color); }
-
+    
+    .unresolved {
+      color: var(--unresolved-color);
+      font-weight: 600;
+    }
+    
+    .tenant-paid {
+      color: var(--tenant-paid-color);
+      font-weight: 600;
+    }
+    
+    .delay {
+      color: var(--unresolved-color);
+    }
+    
+    /* DELAY HIGHLIGHTING STYLES */
     .delay-highlight {
       background-color: var(--delay-bg-color) !important;
       border-left: 4px solid var(--unresolved-color);
     }
-
-    .delay-highlight:hover {
-      background-color: #ffcdd2 !important;
-    }
-
+    
     .delay-text {
       color: var(--unresolved-color);
       font-weight: 700;
-      font-size: 12px;
+      font-size: 13px;
       text-transform: uppercase;
     }
-
+    
     .delay-alert {
       display: inline-block;
       background-color: var(--unresolved-color);
@@ -317,42 +336,48 @@
       padding: 3px 6px;
       border-radius: 4px;
       margin-top: 3px;
-      font-size: 10px;
+      font-size: 11px;
       text-transform: uppercase;
     }
-
+    
+    /* HIGHLIGHT TENANT EXPENSE ROWS */
     .expense-highlight {
       background-color: #fff3e0 !important;
       border-left: 4px solid var(--tenant-paid-color);
     }
-
-    .expense-highlight:hover {
-      background-color: #ffe0b2 !important;
-    }
-
+    
     .expense-text {
       color: var(--tenant-paid-color);
       font-weight: 700;
-      font-size: 12px;
+      font-size: 13px;
       text-transform: uppercase;
     }
-
+    
+    .expense-badge {
+      display: inline-block;
+      background-color: var(--tenant-paid-color);
+      color: white;
+      font-weight: bold;
+      padding: 3px 8px;
+      border-radius: 4px;
+      margin-left: 5px;
+      font-size: 12px;
+    }
+    
+    /* HEALTH IMPACT STYLES */
     .health-impact-highlight {
       background-color: #ffebee !important;
       border-left: 4px solid var(--health-impact-color);
     }
-
-    .health-impact-highlight:hover {
-      background-color: #ffcdd2 !important;
-    }
-
+    
     .health-impact-text {
       color: var(--health-impact-color);
       font-weight: 700;
-      font-size: 12px;
+      font-size: 13px;
       text-transform: uppercase;
     }
-
+    
+    /* Communication Badges */
     .text-badge, .email-badge {
       display: inline-block;
       font-weight: 600;
@@ -362,142 +387,282 @@
       border-radius: 4px;
       margin-left: 5px;
     }
-
+    
     .text-badge {
       background-color: #e3f2fd;
       color: #1565c0;
       border: 1px solid #1565c0;
     }
-
+    
     .email-badge {
       background-color: #e8f5e9;
       color: #2e7d32;
       border: 1px solid #2e7d32;
     }
-
+    
+    /* Unresolved Issues Summary Box */
     .unresolved-list {
-      margin-top: 20px;
+      margin-top: 30px;
       border-radius: 8px;
       border: 1px solid #f8d7da;
-      padding: 15px;
+      padding: 20px;
       background-color: #fff5f6;
       box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
     }
-
+    
     .unresolved-list h2 {
       color: #d32f2f;
       margin-top: 0;
       border-bottom: 1px solid #f8d7da;
-      padding-bottom: 8px;
+      padding-bottom: 10px;
     }
-
-    .chronic-delays {
+    
+    .unresolved-list h3 {
+      color: #d32f2f;
       margin-top: 20px;
+    }
+    
+    .unresolved-list ul {
+      padding-left: 20px;
+    }
+    
+    .unresolved-list li {
+      margin-bottom: 12px;
+      line-height: 1.5;
+    }
+    
+    /* Chronic Delays Section */
+    .chronic-delays {
+      margin-top: 30px;
       border-radius: 8px;
       border: 2px solid var(--unresolved-color);
-      padding: 15px;
+      padding: 20px;
       background-color: var(--delay-bg-color);
       box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     }
-
+    
     .chronic-delays h2 {
       color: var(--unresolved-color);
       margin-top: 0;
       text-transform: uppercase;
-      font-size: 18px;
+      font-size: 20px;
       border-bottom: 2px solid var(--unresolved-color);
-      padding-bottom: 8px;
+      padding-bottom: 10px;
     }
-
+    
+    /* Total expenses banner */
     .total-expenses {
       background-color: var(--tenant-paid-color);
       color: white;
       font-weight: 700;
-      padding: 8px 12px;
-      margin: 15px 0 8px 0;
+      padding: 10px 15px;
+      margin: 20px 0 10px 0;
       border-radius: 4px;
-      font-size: 16px;
+      font-size: 18px;
       text-align: right;
     }
-
-    @media (max-width: 600px) {
-      body {
-        padding: 5px;
-        font-size: 12px;
-      }
-
-      .dashboard {
-        padding: 10px;
-        box-shadow: none;
-      }
-
-      h1 {
-        font-size: 18px;
-        margin-bottom: 15px;
-      }
-
-      h2 {
-        font-size: 14px;
-      }
-
-      h3 {
-        font-size: 12px;
-      }
-
-      .summary {
-        grid-template-columns: 1fr;
-        gap: 8px;
-      }
-
-      .stat-box {
-        padding: 10px;
-      }
-
-      .stat-box p {
-        font-size: 20px;
-      }
-
-      .timeline {
-        flex-direction: column;
-        padding: 10px;
-      }
-
-      .timeline::before {
-        display: none;
-      }
-
-      .timeline-point {
-        width: 100%;
-        margin: 5px 0;
-      }
-
-      .category-header {
-        padding: 8px 10px;
-        font-size: 13px;
-      }
-
-      th, td {
-        padding: 6px;
-        font-size: 11px;
-      }
-
-      .table-responsive {
-        margin: 0 -10px;
-      }
-
-      table {
-        min-width: 300px;
-      }
+    
+    /* Page breaks for print */
+    .page-break {
+      page-break-after: always;
+      height: 0;
+      display: block;
+      margin: 0;
     }
-
+    
+    /* Print Settings */
+    @page {
+      size: letter;
+      margin: 0.5in;
+    }
+    
     @media print {
       body {
         background-color: white;
         padding: 0;
       }
+      
       .dashboard {
         box-shadow: none;
         padding: 0;
+      }
+      
+      .category-section {
+        box-shadow: none;
+        border: 1px solid #ddd;
+      }
+      
+      .unresolved-list {
+        box-shadow: none;
+      }
+      
+      .delay-highlight {
+        background-color: #fff0f0 !important;
+        border-left: 4px solid #d32f2f;
+      }
+      
+      .expense-highlight {
+        background-color: #fff8e1 !important;
+        border-left: 4px solid var(--tenant-paid-color);
+      }
+      
+      .health-impact-highlight {
+        background-color: #ffebee !important;
+        border-left: 4px solid var(--health-impact-color);
+      }
+    }
+    
+    /* Enhanced Responsive Adjustments */
+    @media (max-width: 768px) {
+      body {
+        padding: 10px;
+      }
+      
+      .dashboard {
+        padding: 15px;
+      }
+      
+      h1 {
+        font-size: 20px;
+        margin-bottom: 20px;
+      }
+      
+      h2 {
+        font-size: 16px;
+      }
+      
+      h3 {
+        font-size: 14px;
+      }
+      
+      .summary {
+        grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+        gap: 10px;
+      }
+      
+      .stat-box {
+        padding: 12px 8px;
+      }
+      
+      .stat-box h3 {
+        font-size: 12px;
+      }
+      
+      .stat-box p {
+        font-size: 20px;
+      }
+      
+      .timeline {
+        flex-direction: column;
+        align-items: center;
+        gap: 15px;
+        padding: 15px 10px;
+      }
+      
+      .timeline::before {
+        display: none;
+      }
+      
+      .timeline-point {
+        width: 90%;
+        max-width: 250px;
+      }
+      
+      .category-header {
+        padding: 10px 15px;
+        font-size: 14px;
+      }
+      
+      th, td {
+        padding: 8px;
+        font-size: 12px;
+      }
+      
+      /* Make tables swipeable on mobile */
+      .table-responsive {
+        max-width: 100%;
+        margin-bottom: 15px;
+      }
+      
+      table {
+        min-width: 500px; /* Ensures horizontal scrolling on small screens */
+      }
+      
+      /* Improve mobile legibility for special statuses */
+      .delay-text, .expense-text, .health-impact-text {
+        font-size: 11px;
+      }
+      
+      .health-impact-title {
+        font-size: 14px;
+      }
+      
+      .total-expenses {
+        font-size: 16px;
+        text-align: center;
+      }
+      
+      /* Reduce padding on info boxes for mobile */
+      .tenant-expenses-box, .health-impact-box, .chronic-delays, .unresolved-list {
+        padding: 15px;
+      }
+      
+      /* Improve list readability on mobile */
+      .health-impact-list li, .unresolved-list li {
+        margin-bottom: 8px;
+      }
+    }
+    
+    /* Extra small devices (phones under 480px) */
+    @media (max-width: 480px) {
+      body {
+        padding: 5px;
+      }
+      
+      .dashboard {
+        padding: 10px;
+      }
+      
+      h1 {
+        font-size: 18px;
+        padding-bottom: 10px;
+      }
+      
+      .summary {
+        grid-template-columns: 1fr 1fr; /* 2 columns for very small screens */
+      }
+      
+      .stat-box p {
+        font-size: 18px;
+      }
+      
+      .expense-amount {
+        font-size: 16px;
+      }
+      
+      /* Collapsible sections for mobile */
+      .table-responsive {
+        display: none; /* Hidden by default, shown when header clicked */
+      }
+      
+      /* Add indicators for collapsible sections */
+      .category-header::after {
+        content: '+';
+        font-size: 16px;
+        margin-left: 5px;
+      }
+      
+      .category-header.active::after {
+        content: '-';
+      }
+      
+      /* Show the first section by default for context */
+      .category-section:first-of-type .table-responsive {
+        display: block;
+      }
+      
+      .category-section:first-of-type .category-header::after {
+        content: '-';
       }
     }
   </style>
@@ -506,6 +671,7 @@
   <div class="dashboard">
     <h1>Maintenance Issues and Response Log</h1>
     
+    <!-- Summary Stats -->
     <div class="summary">
       <div class="stat-box" style="border-left: 4px solid #2c3e50;">
         <h3>Total Issues</h3>
@@ -526,6 +692,7 @@
       </div>
     </div>
     
+    <!-- Timeline -->
     <div class="timeline">
       <div class="timeline-point">
         <div class="timeline-year">2021</div>
@@ -545,6 +712,7 @@
       </div>
     </div>
     
+    <!-- AC Leaks & Repairs -->
     <div class="category-section">
       <div class="category-header ac-header">
         AC Leaks & Repairs <span class="issue-count">10 issues</span>
@@ -637,9 +805,301 @@
       </div>
     </div>
     
-    <!-- Remaining sections like Window Issues, Blinds Issues, etc., follow the same structure -->
-    <!-- For brevity, I'll summarize that they are included here unchanged unless you need specific edits -->
+    <div class="page-break"></div>
     
+    <!-- Window Issues -->
+    <div class="category-section">
+      <div class="category-header window-header">
+        Window Issues <span class="issue-count">11 issues</span>
+      </div>
+      <div class="table-responsive">
+        <table>
+          <thead>
+            <tr>
+              <th width="15%">Date</th>
+              <th width="30%">Issue</th>
+              <th width="30%">Resolution</th>
+              <th width="25%">Communication</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Feb 4, 2021</td>
+              <td>Window not shutting properly</td>
+              <td class="unresolved"></td>
+              <td>Paul to Moti at 9:45am <span class="text-badge">TEXT</span></td>
+            </tr>
+            <tr class="delay-highlight">
+              <td>Feb 7, 2021</td>
+              <td>Condensation and water leaking from vents</td>
+              <td class="unresolved delay-text">NO RESPONSE FOR 72+ HOURS</td>
+              <td>Paul to Moti at 12:25pm <span class="text-badge">TEXT</span></td>
+            </tr>
+            <tr class="delay-highlight">
+              <td>Mar 29, 2021</td>
+              <td>Window handles broken, allowing air leaks</td>
+              <td class="unresolved delay-text">ISSUE PERSISTED FOR 3+ YEARS</td>
+              <td>Paul to Moti at 10:56am <span class="text-badge">TEXT</span></td>
+            </tr>
+            <tr>
+              <td>Apr 1, 2021</td>
+              <td>Windows still not shutting properly</td>
+              <td class="unresolved">AC not cooling the place</td>
+              <td>Paul to Moti at 12:14pm <span class="text-badge">TEXT</span></td>
+            </tr>
+            <tr>
+              <td>Apr 11, 2021</td>
+              <td>Windows still not shutting properly</td>
+              <td class="unresolved">Repeated issue, AC not cooling</td>
+              <td>Paul to Moti at 9:17am <span class="text-badge">TEXT</span></td>
+            </tr>
+            <tr>
+              <td>Jun 9, 2022</td>
+              <td>Water leaking through the windows</td>
+              <td class="unresolved"></td>
+              <td>Paul to Moti at 2:14pm with photos <span class="text-badge">TEXT</span></td>
+            </tr>
+            <tr>
+              <td>Jun 10, 2022</td>
+              <td>Building maintenance recommendation</td>
+              <td>Re-caulking windows recommended</td>
+              <td>Paul to Moti at 2:58pm <span class="text-badge">TEXT</span></td>
+            </tr>
+            <tr>
+              <td>Jun 11, 2022</td>
+              <td></td>
+              <td class="resolved">Moti came to hand shut windows</td>
+              <td>Moti to Paul at 9:57am <span class="text-badge">TEXT</span></td>
+            </tr>
+            <tr class="delay-highlight">
+              <td>Jun 8, 2023</td>
+              <td>Water leaking through windows again</td>
+              <td class="unresolved delay-text">RECURRING ISSUE - NEVER PERMANENTLY FIXED</td>
+              <td>Paul to Moti at 4:46pm with photos/videos <span class="text-badge">TEXT</span></td>
+            </tr>
+            <tr class="delay-highlight">
+              <td>Jun 16, 2023</td>
+              <td></td>
+              <td class="resolved delay-text">8 DAY RESPONSE TIME</td>
+              <td>Moti to Paul at 10:46am <span class="text-badge">TEXT</span></td>
+            </tr>
+            <tr class="delay-highlight">
+              <td>Apr 16, 2024</td>
+              <td>Window repair delays</td>
+              <td class="unresolved delay-text">ONGOING ISSUE FOR 3+ YEARS WITH NO PERMANENT FIX</td>
+              <td>Moti to Paul, multiple times <span class="email-badge">EMAIL</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    
+    <!-- Blinds Issues -->
+    <div class="category-section">
+      <div class="category-header blinds-header">
+        Blinds Issues <span class="issue-count">12 issues</span>
+      </div>
+      <div class="table-responsive">
+        <table>
+          <thead>
+            <tr>
+              <th width="15%">Date</th>
+              <th width="30%">Issue</th>
+              <th width="30%">Resolution</th>
+              <th width="25%">Communication</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Oct 5, 2021</td>
+              <td>Blind clutch jammed</td>
+              <td class="unresolved">Needed replacement parts</td>
+              <td>Paul to Moti at 12:44pm <span class="text-badge">TEXT</span></td>
+            </tr>
+            <tr>
+              <td>Oct 5, 2021</td>
+              <td></td>
+              <td>Moti ordered parts</td>
+              <td>Moti to Paul at 12:44pm <span class="text-badge">TEXT</span></td>
+            </tr>
+            <tr class="delay-highlight">
+              <td>Oct 7, 2021</td>
+              <td>Parts not ordered yet</td>
+              <td class="unresolved delay-text">DELAY IN ORDERING PARTS - 48+ HOURS</td>
+              <td>Moti to Paul at 6:04pm <span class="text-badge">TEXT</span></td>
+            </tr>
+            <tr>
+              <td>Oct 8, 2021</td>
+              <td></td>
+              <td>Paul sent pictures of items needed</td>
+              <td>Paul to Moti at 9:48am <span class="text-badge">TEXT</span></td>
+            </tr>
+            <tr>
+              <td>Oct 11, 2021</td>
+              <td></td>
+              <td>Moti scheduled visit for next day</td>
+              <td>Moti to Paul at 1:09am <span class="text-badge">TEXT</span></td>
+            </tr>
+            <tr>
+              <td>Oct 12, 2021</td>
+              <td></td>
+              <td class="resolved">Moti arrived to fix blinds, partial fix</td>
+              <td>Moti to Paul at 11:50am <span class="text-badge">TEXT</span></td>
+            </tr>
+            <tr>
+              <td>Oct 17, 2021</td>
+              <td></td>
+              <td>Moti sent chain via Amazon</td>
+              <td>Moti to Paul at 2:43pm <span class="text-badge">TEXT</span></td>
+            </tr>
+            <tr>
+              <td>Oct 20, 2021</td>
+              <td></td>
+              <td class="resolved">Paul had to take metal clip out to make blinds work</td>
+              <td>Paul to Moti at 3:39pm <span class="text-badge">TEXT</span></td>
+            </tr>
+            <tr>
+              <td>Dec 3, 2022</td>
+              <td>Blind in kitchen detached from casing, bedroom casing came out</td>
+              <td class="unresolved"></td>
+              <td>Paul to Moti at 9:13am <span class="text-badge">TEXT</span></td>
+            </tr>
+            <tr>
+              <td>Dec 6, 2022</td>
+              <td></td>
+              <td>Paul sent pictures of blind issues</td>
+              <td>Paul to Moti at 8:14am <span class="text-badge">TEXT</span></td>
+            </tr>
+            <tr class="delay-highlight">
+              <td>Dec 13, 2022</td>
+              <td></td>
+              <td class="resolved delay-text">10 DAY DELAY FOR PARTIAL FIX</td>
+              <td>Moti to Paul at 10:43am <span class="text-badge">TEXT</span></td>
+            </tr>
+            <tr class="delay-highlight">
+              <td>Jan 30, 2024</td>
+              <td>Bedroom blind detached</td>
+              <td class="unresolved delay-text">NEVER RESOLVED - OVER 1 YEAR</td>
+              <td>Paul to Moti <span class="email-badge">EMAIL</span></td>
+            </tr>
+            <tr class="delay-highlight">
+              <td>Apr 6, 2024</td>
+              <td>Blinds misaligned in living room, bedroom blind still broken</td>
+              <td class="unresolved delay-text">ISSUES PERSISTED THROUGH END OF LEASE</td>
+              <td>Noted by Paul, no communication sent</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    
+    <div class="page-break"></div>
+    
+    <!-- Mold/Musty Smell Reports -->
+    <div class="category-section">
+      <div class="category-header mold-header">
+        Mold/Musty Smell Reports <span class="issue-count">12 issues</span>
+      </div>
+      <div class="table-responsive">
+        <table>
+          <thead>
+            <tr>
+              <th width="15%">Date</th>
+              <th width="30%">Issue</th>
+              <th width="30%">Resolution</th>
+              <th width="25%">Communication</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Aug 4, 2023</td>
+              <td>Musty smell & pooling water, possibly from AC</td>
+              <td class="unresolved"></td>
+              <td>Paul to Moti at 1:42pm <span class="text-badge">TEXT</span></td>
+            </tr>
+            <tr class="delay-highlight">
+              <td>Aug 5, 2023</td>
+              <td></td>
+              <td class="delay-text">24+ HOUR DELAY IN RESPONSE</td>
+              <td>Moti to Paul at 9:53am <span class="text-badge">TEXT</span></td>
+            </tr>
+            <tr>
+              <td>Aug 6, 2023</td>
+              <td>AC vents identified as strongest source of smell</td>
+              <td class="unresolved">Paul investigation</td>
+              <td>Paul to Moti at 12:24pm <span class="text-badge">TEXT</span></td>
+            </tr>
+            <tr>
+              <td>Aug 6, 2023</td>
+              <td></td>
+              <td>Moti would order AC company</td>
+              <td>Moti to Paul at 7:58pm <span class="text-badge">TEXT</span></td>
+            </tr>
+            <tr>
+              <td>Aug 7, 2023</td>
+              <td>Musty smell getting worse</td>
+              <td>Moti in contact with AC companies</td>
+              <td>Exchange at 1:08pm <span class="text-badge">TEXT</span></td>
+            </tr>
+            <tr>
+              <td>Aug 8, 2023</td>
+              <td>Request to resolve smell and pooling water from AC</td>
+              <td class="unresolved"></td>
+              <td>Paul to Moti at 9:52pm <span class="text-badge">TEXT</span></td>
+            </tr>
+            <tr>
+              <td>Aug 8, 2023</td>
+              <td></td>
+              <td>AC technician visit confirmed for next day</td>
+              <td>Moti to Paul at 3:00pm <span class="text-badge">TEXT</span></td>
+            </tr>
+            <tr>
+              <td>Aug 9, 2023</td>
+              <td></td>
+              <td class="resolved">AC serviced, smell improved</td>
+              <td>Paul to Moti at 1:50pm with pictures <span class="text-badge">TEXT</span></td>
+            </tr>
+            <tr class="delay-highlight">
+              <td>Mar 16, 2024</td>
+              <td>Suspected mold or smoking issue in building</td>
+              <td class="unresolved delay-text">TOOK 30+ DAYS TO ADDRESS VENTILATION ISSUES</td>
+              <td>Paul to Moti and management <span class="email-badge">EMAIL</span></td>
+            </tr>
+            <tr class="delay-highlight health-impact-highlight">
+              <td>Mar 26, 2024</td>
+              <td>Smoke/musty smell persisting, source unclear. Health issues developing: breathing difficulties, headaches, dizziness, poor focus</td>
+              <td class="unresolved delay-text">1.5 MONTHS OF SMOKE/MOLD - HEALTH HAZARD</td>
+              <td>Paul to Moti and management <span class="email-badge">EMAIL</span></td>
+            </tr>
+            <tr class="health-impact-highlight">
+              <td>Apr 15, 2024</td>
+              <td>Air quality issues causing worsening health symptoms: breathing problems, severe headaches, dizziness, inability to focus for work, poor sleep</td>
+              <td class="tenant-paid health-impact-text">NO RESOLUTION BY MANAGEMENT AND MOTI - FORCED TO PURCHASE $1,000 AIR PURIFIER</td>
+              <td class="delay">Health impacts forced tenant action after no landlord response</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      
+      <!-- HEALTH IMPACT BOX - NEW SECTION -->
+      <div class="health-impact-box">
+        <div class="health-impact-title">SEVERE HEALTH IMPACTS FROM UNRESOLVED AIR QUALITY ISSUES</div>
+        <ul class="health-impact-list">
+          <li>Breathing difficulties - worsened over time with continued exposure</li>
+          <li>Persistent headaches - severe enough to impact daily functioning</li>
+          <li>Dizziness - creating safety concerns in the home</li>
+          <li>Inability to focus for work - directly impacting tenant's livelihood</li>
+          <li>Poor sleep quality - which exacerbated all other symptoms</li>
+          <li>$1,000 air purifier purchase was MEDICALLY NECESSARY due to landlord's negligence</li>
+        </ul>
+      </div>
+    </div>
+    
+    <!-- More sections follow... -->
+    
+    <!-- Other issue sections not shown in this abridged example -->
+    
+    <!-- Tenant Paid Repairs Details -->
     <div class="tenant-expenses-box">
       <h2>Tenant Out-of-Pocket Expenses</h2>
       <div>
@@ -649,6 +1109,7 @@
           <li>Forced to purchase after 45+ days of landlord inaction on reported mold/air quality issues</li>
           <li>Air purifier was MEDICALLY NECESSARY due to severe health symptoms:</li>
         </ul>
+        
         <div class="health-impact-box">
           <div class="health-impact-title">HEALTH IMPACTS FROM POOR AIR QUALITY</div>
           <ul class="health-impact-list">
@@ -659,6 +1120,7 @@
             <li>Poor sleep quality - which made all other symptoms worse in a cycle of deterioration</li>
           </ul>
         </div>
+        
         <h3>Electrical Repairs (March 2023)</h3>
         <div class="expense-amount">$650.00</div>
         <ul>
@@ -674,9 +1136,11 @@
           <li>Total electrician bill of $650 for a pre-existing issue that landlord failed to address</li>
         </ul>
       </div>
+      
       <div class="total-expenses">TOTAL TENANT EXPENSES: $1,650.00+</div>
     </div>
 
+    <!-- Chronic Delays Section -->
     <div class="chronic-delays">
       <h2>CHRONIC PATTERN OF EXCESSIVE DELAYS</h2>
       <ul>
@@ -692,6 +1156,7 @@
       <p><strong>Industry standard response time</strong> for maintenance issues is <span class="delay-text">24-48 hours</span>. This property consistently exceeded this standard by <span class="delay-text">DAYS, WEEKS, OR MONTHS</span>, resulting in tenant living with unresolved safety and comfort issues and forcing tenant to pay out-of-pocket for necessary repairs.</p>
     </div>
 
+    <!-- Unresolved Issues Summary -->
     <div class="unresolved-list">
       <h2>Summary of Unresolved Issues</h2>
       <ul>
@@ -704,12 +1169,14 @@
         <li><strong>Electrical</strong>: Outlets required tenant to hire and pay for electrician for TWO separate visits costing $650 total after two months of non-response (Dec 2022 - Mar 2023). Issue existed prior to move-in.</li>
         <li><strong>Refrigerator</strong>: Leak reported in Aug 2023 received no follow-up or resolution from landlord.</li>
       </ul>
+      
       <h3>Tenant-Paid Repairs Summary</h3>
       <ul>
         <li>$1,000 air purifier purchase in April 2024 to address unresolved air quality/mold issues after 45+ days without resolution by management and Moti. This purchase was medically necessary due to severe health impacts including breathing difficulties, headaches, dizziness, inability to focus for work, and poor sleep.</li>
         <li>$650 for electrician assessment visit and repair visit for outlet/dimmer switch repair in March 2023 for a pre-existing issue that existed since before move-in.</li>
         <li>Emergency AC repair in July 2024 due to water leakage.</li>
       </ul>
+      
       <h3>Pattern of Delayed Response</h3>
       <ul>
         <li>Average response time of 7+ days for maintenance issues</li>
@@ -723,41 +1190,95 @@
   </div>
 
   <script>
+    // Add enhanced mobile interactivity
     document.addEventListener('DOMContentLoaded', function() {
+      // Make table rows highlight on hover
       const tableRows = document.querySelectorAll('tbody tr');
       tableRows.forEach(row => {
-        row.addEventListener('touchstart', function() {
+        row.addEventListener('mouseenter', function() {
           if (!this.classList.contains('delay-highlight') && !this.classList.contains('expense-highlight') && !this.classList.contains('health-impact-highlight')) {
             this.style.backgroundColor = '#f1f3f5';
           }
         });
-        row.addEventListener('touchend', function() {
+        row.addEventListener('mouseleave', function() {
           if (!this.classList.contains('delay-highlight') && !this.classList.contains('expense-highlight') && !this.classList.contains('health-impact-highlight')) {
             const isEven = [...this.parentNode.children].indexOf(this) % 2 === 1;
             this.style.backgroundColor = isEven ? '#f8f9fa' : '';
           }
         });
       });
-
+      
+      // Improved collapsible sections for mobile
       const categoryHeaders = document.querySelectorAll('.category-header');
       categoryHeaders.forEach(header => {
-        header.addEventListener('click', toggleSection);
-        header.addEventListener('touchstart', toggleSection);
-        header.style.cursor = 'pointer';
+        header.addEventListener('click', function() {
+          const tableContainer = this.nextElementSibling;
+          
+          // Toggle display
+          if (tableContainer.style.display === 'none' || tableContainer.style.display === '') {
+            tableContainer.style.display = 'block';
+            this.classList.add('active');
+            this.style.borderBottomLeftRadius = '0';
+            this.style.borderBottomRightRadius = '0';
+          } else {
+            tableContainer.style.display = 'none';
+            this.classList.remove('active');
+            this.style.borderBottomLeftRadius = '8px';
+            this.style.borderBottomRightRadius = '8px';
+          }
+        });
       });
-
-      function toggleSection(e) {
-        e.preventDefault();
-        const tableContainer = this.nextElementSibling;
-        if (tableContainer.style.display === 'none') {
-          tableContainer.style.display = 'block';
-          this.style.borderBottomLeftRadius = '0';
-          this.style.borderBottomRightRadius = '0';
+      
+      // On mobile, collapse all sections except the first one by default
+      function setupMobileView() {
+        if (window.innerWidth <= 480) {
+          categoryHeaders.forEach((header, index) => {
+            const tableContainer = header.nextElementSibling;
+            if (index !== 0) { // Leave first section open
+              tableContainer.style.display = 'none';
+              header.classList.remove('active');
+              header.style.borderBottomLeftRadius = '8px';
+              header.style.borderBottomRightRadius = '8px';
+            } else {
+              header.classList.add('active');
+            }
+          });
         } else {
-          tableContainer.style.display = 'none';
-          this.style.borderBottomLeftRadius = '8px';
-          this.style.borderBottomRightRadius = '8px';
+          categoryHeaders.forEach(header => {
+            const tableContainer = header.nextElementSibling;
+            tableContainer.style.display = 'block';
+            header.style.borderBottomLeftRadius = '0';
+            header.style.borderBottomRightRadius = '0';
+          });
         }
+      }
+      
+      // Initial setup
+      setupMobileView();
+      
+      // Reapply on resize
+      window.addEventListener('resize', setupMobileView);
+      
+      // Add swipe hint on mobile for tables
+      if (window.innerWidth <= 768) {
+        const tableContainers = document.querySelectorAll('.table-responsive');
+        tableContainers.forEach(container => {
+          if (container.scrollWidth > container.clientWidth) {
+            const swipeHint = document.createElement('div');
+            swipeHint.style.textAlign = 'center';
+            swipeHint.style.color = '#6c757d';
+            swipeHint.style.fontSize = '12px';
+            swipeHint.style.padding = '5px 0';
+            swipeHint.style.fontStyle = 'italic';
+            swipeHint.innerText = 'Swipe left/right to view more';
+            container.parentNode.insertBefore(swipeHint, container);
+            
+            // Remove the hint after the user has scrolled
+            container.addEventListener('scroll', function() {
+              swipeHint.style.display = 'none';
+            }, { once: true });
+          }
+        });
       }
     });
   </script>
